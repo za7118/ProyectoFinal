@@ -1,0 +1,9 @@
+https://sgestor.000webhostapp.com
+
+usuario maestra
+usuario: zahid2
+contraseña: 1234
+
+usuario alumno
+usuario: zahid3
+contraseña: 1234

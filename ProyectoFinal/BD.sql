@@ -1,0 +1,67 @@
+DROP DATABASE IF EXISTS SG;
+CREATE DATABASE SG;
+USE SG;
+
+CREATE TABLE Maestra(
+Clave_T    INT(30) NOT NULL PRIMARY KEY,
+Nombre     VARCHAR(20) NOT NULL,
+ApellidoM  VARCHAR(20) NOT NULL,
+ApellidoP  VARCHAR(20) NOT NULL);
+
+CREATE TABLE Alumno(
+CURP      VARCHAR(10) NOT NULL PRIMARY KEY,
+Nombre    VARCHAR(20) NOT NULL,
+ApellidoM VARCHAR(20) NOT NULL,
+ApellidoP VARCHAR(20) NOT NULL,
+FechaN    DATE,
+Tutor     VARCHAR(50) NOT NULL,
+MAsignada INT(30) NOT NULL,
+FOREIGN KEY(MAsignada) REFERENCES Maestra(Clave_T));
+
+CREATE TABLE Grado(
+Id_Grado  INT NOT NULL PRIMARY KEY,
+Grado     INT,
+MAsgGrupo INT(30) NOT NULL,
+FOREIGN KEY(MAsgGrupo) REFERENCES Maestra(Clave_T));
+
+CREATE TABLE Grupo(
+Id_Grupo INT NOT NULL PRIMARY KEY,
+Grupo    CHAR,
+MAsGrado INT(30) NOT NULL,
+FOREIGN KEY(MAsGrado) REFERENCES Maestra(Clave_T));
+
+CREATE TABLE Calificaciones(
+Id_Calf   INT NOT NULL PRIMARY KEY,
+PrimeraC  FLOAT(2),
+SegundaC  FLOAT(2),
+TerceraC  FLOAT(2),
+CoAlumno  VARCHAR(10),
+FOREIGN KEY(CoAlumno) REFERENCES Alumno(CURP));
+
+CREATE TABLE AvisosIndividuales(
+Id_Aviso  INT NOT NULL PRIMARY KEY,
+Aviso     TEXT,
+A_Grupo   INT,
+A_Grado   INT,
+A_CURP    VARCHAR(10),
+FOREIGN KEY(A_Grupo) REFERENCES Grupo(Id_Grupo),
+FOREIGN KEY(A_Grado) REFERENCES Grado(Id_Grado),
+FOREIGN KEY(A_CURP)  REFERENCES Alumno(CURP));
+
+CREATE TABLE AvisoGrupales(
+Id_AvisoG INT NOT NULL PRIMARY KEY,
+Aviso     TEXT,
+A_Grado   INT,
+A_Grupo   INT,
+FOREIGN KEY(A_Grupo) REFERENCES Grupo(Id_Grupo),
+FOREIGN KEY(A_Grado) REFERENCES Grado(Id_Grado));
+
+CREATE TABLE Usuarios(
+Id_Usuarios INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+User        VARCHAR(10),
+Passw		VARCHAR(10),
+Tipo_Us     ENUM('Maestro','Usuario','Administrador'),
+U_CURP      VARCHAR(10),
+U_Clave     INT(30),
+FOREIGN KEY(U_CURP) REFERENCES Alumno(CURP),
+FOREIGN KEY(U_Clave) REFERENCES Maestra(Clave_T));
